@@ -1,0 +1,97 @@
+3.17：
+给定一个字符串 s ，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
+示例 1：
+
+输入：s = "Let's take LeetCode contest"
+输出："s'teL ekat edoCteeL tsetnoc"
+
+my solution:
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        left = 0
+        index = 0
+        res = ''
+        while(1):
+            blank = ' '
+            index = s[left:].find(blank)
+            if index != -1:
+                ss = s[left:left+index]
+                left = left + index + 1
+                res = res + ss[::-1] + ' '
+            else:
+                break
+        ss = s[left:]
+        res += ss[::-1]
+        return res
+
+ref solution:
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        return ' '.join([w[::-1] for w in s.split(' ')])
+
+3.18：
+给你单链表的头结点 head ，请你找出并返回链表的中间结点。
+如果有两个中间结点，则返回第二个中间结点。        
+
+my solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        lens = 0
+        l_head = head
+        while l_head.next != None:
+            l_head = l_head.next
+            lens += 1
+        if lens % 2 == 0:
+            for i in range(int(lens/2)):
+                head = head.next
+        else:
+            for i in range(int(lens//2+1)):
+                head = head.next
+        return head
+缺点：
+
+必须先遍历完整个链表，然后才可以「干正事」，再遍历到一半，找到中间结点；
+在链表的长度很长的时候，这种方法之前的等待会很久。        
+
+ref solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+使用两个指针变量，刚开始都位于链表的第 1 个结点，一个永远一次只走 1 步，一个永远一次只走 2 步，一个在前，一个在后，同时走。这样当快指针走完的时候，慢指针就来到了链表的中间位置。
+思想是：快慢指针的前进方向相同，且它们步伐的「差」是恒定的，根据这种确定性去解决链表中的一些问题。使用这种思想还可以解决链表的以下问题：
+
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+ref solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        first = head
+        second = dummy
+        for i in range(n):
+            first = first.next
+
+        while first:
+            first = first.next
+            second = second.next
+        
+        second.next = second.next.next
+        return dummy.next

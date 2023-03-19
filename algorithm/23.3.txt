@@ -1,0 +1,227 @@
+3.17：
+给定一个字符串 s ，你需要反转字符串中每个单词的字符顺序，同时仍保留空格和单词的初始顺序。
+示例 1：
+
+输入：s = "Let's take LeetCode contest"
+输出："s'teL ekat edoCteeL tsetnoc"
+
+my solution:
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        left = 0
+        index = 0
+        res = ''
+        while(1):
+            blank = ' '
+            index = s[left:].find(blank)
+            if index != -1:
+                ss = s[left:left+index]
+                left = left + index + 1
+                res = res + ss[::-1] + ' '
+            else:
+                break
+        ss = s[left:]
+        res += ss[::-1]
+        return res
+
+ref solution:
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        return ' '.join([w[::-1] for w in s.split(' ')])
+-----------------------------------------------------------------------------------------
+3.18：
+给你单链表的头结点 head ，请你找出并返回链表的中间结点。
+如果有两个中间结点，则返回第二个中间结点。        
+
+my solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        lens = 0
+        l_head = head
+        while l_head.next != None:
+            l_head = l_head.next
+            lens += 1
+        if lens % 2 == 0:
+            for i in range(int(lens/2)):
+                head = head.next
+        else:
+            for i in range(int(lens//2+1)):
+                head = head.next
+        return head
+缺点：
+
+必须先遍历完整个链表，然后才可以「干正事」，再遍历到一半，找到中间结点；
+在链表的长度很长的时候，这种方法之前的等待会很久。        
+
+ref solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        slow, fast = head, head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+        return slow
+使用两个指针变量，刚开始都位于链表的第 1 个结点，一个永远一次只走 1 步，一个永远一次只走 2 步，一个在前，一个在后，同时走。这样当快指针走完的时候，慢指针就来到了链表的中间位置。
+思想是：快慢指针的前进方向相同，且它们步伐的「差」是恒定的，根据这种确定性去解决链表中的一些问题。使用这种思想还可以解决链表的以下问题：
+-----------------------------------------------------------------------------------------
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+ref solution:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def removeNthFromEnd(self, head: Optional[ListNode], n: int) -> Optional[ListNode]:
+        dummy = ListNode(0, head)
+        first = head
+        second = dummy
+        for i in range(n):
+            first = first.next
+
+        while first:
+            first = first.next
+            second = second.next
+        
+        second.next = second.next.next
+        return dummy.next
+-----------------------------------------------------------------------------------------
+3.19：
+给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
+示例 1:
+输入: s = "abcabcbb"
+输出: 3 
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+my solution:
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        temp_len = 0
+        lens = [1]
+        s_set = {}
+        if s == "":
+            return 0
+        for i in range(len(s)):
+            start = i
+            ends = i
+            while True:
+                s_set = set(s[start:ends])
+                #print(s_set)
+                if len(s_set) == len(s[start:ends]):
+                    #print("s_set:", s_set)
+                    #print(start,ends,s[start:ends])
+                    ends += 1
+                    if ends > len(s):
+                        lens.append(len(s_set))
+                        break
+                    continue
+                else:
+                    lens.append(len(s_set))
+                    #print("lens:", lens)
+                    s_set = {}
+                    break
+        return max(lens)
+ref solution:
+滑动窗口
+class Solution:
+    def problemName(self, s: str) -> int:
+        # Step 1: 定义需要维护的变量们 (对于滑动窗口类题目，这些变量通常是最小长度，最大长度，或者哈希表)
+        x, y = ..., ...
+
+        # Step 2: 定义窗口的首尾端 (start, end)， 然后滑动窗口
+        start = 0
+        for end in range(len(s)):
+            # Step 3: 更新需要维护的变量, 有的变量需要一个if语句来维护 (比如最大最小长度)
+            x = new_x
+            if condition:
+                y = new_y
+
+            '''
+            ------------- 下面是两种情况，读者请根据题意二选1 -------------
+            '''
+            # Step 4 - 情况1
+            # 如果题目的窗口长度固定：用一个if语句判断一下当前窗口长度是否达到了限定长度 
+            # 如果达到了，窗口左指针前移一个单位，从而保证下一次右指针右移时，窗口长度保持不变, 
+            # 左指针移动之前, 先更新Step 1定义的(部分或所有)维护变量 
+            if 窗口长度达到了限定长度:
+                # 更新 (部分或所有) 维护变量 
+                # 窗口左指针前移一个单位保证下一次右指针右移时窗口长度保持不变
+
+            # Step 4 - 情况2
+            # 如果题目的窗口长度可变: 这个时候一般涉及到窗口是否合法的问题
+            # 如果当前窗口不合法时, 用一个while去不断移动窗口左指针, 从而剔除非法元素直到窗口再次合法
+            # 在左指针移动之前更新Step 1定义的(部分或所有)维护变量 
+            while 不合法:
+                # 更新 (部分或所有) 维护变量 
+                # 不断移动窗口左指针直到窗口再次合法
+
+        # Step 5: 返回答案
+        return ...
+
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        # Step 1: 定义需要维护的变量, 本题求最大长度，所以需要定义max_len, 该题又涉及去重，因此还需要一个哈希表
+        max_len, hashmap = 0, {}
+
+        # Step 2: 定义窗口的首尾端 (start, end)， 然后滑动窗口
+        start = 0
+        for end in range(len(s)):
+            # Step 3
+            # 更新需要维护的变量 (max_len, hashmap)
+            # i.e. 把窗口末端元素加入哈希表，使其频率加1，并且更新最大长度
+            hashmap[s[end]] = hashmap.get(s[end], 0) + 1
+            if len(hashmap) == end - start + 1:
+                max_len = max(max_len, end - start + 1)
+            
+            # Step 4: 
+            # 根据题意,  题目的窗口长度可变: 这个时候一般涉及到窗口是否合法的问题
+            # 这时要用一个while去不断移动窗口左指针, 从而剔除非法元素直到窗口再次合法
+            # 当窗口长度大于哈希表长度时候 (说明存在重复元素)，窗口不合法
+            # 所以需要不断移动窗口左指针直到窗口再次合法, 同时提前更新需要维护的变量 (hashmap)
+            while end - start + 1 > len(hashmap):
+                head = s[start]
+                hashmap[head] -= 1
+                if hashmap[head] == 0:
+                    del hashmap[head]
+                start += 1
+        # Step 5: 返回答案 (最大长度)
+        return max_len
+
+
+-----------------------------------------------------------------------------------------
+给你两个字符串 s1 和 s2 ，写一个函数来判断 s2 是否包含 s1 的排列。如果是，返回 true ；否则，返回 false 。
+换句话说，s1 的排列之一是 s2 的 子串 。
+示例 1：
+输入：s1 = "ab" s2 = "eidbaooo"
+输出：true
+解释：s2 包含 s1 的排列之一 ("ba").
+
+class Solution:
+    def checkInclusion(self, s1: str, s2: str) -> bool:
+        l_s1 = len(s1)
+        hashmap1 ={}
+        for i in range(l_s1):
+            hashmap1[s1[i]] = hashmap1.get(s1[i],0) + 1
+        hashmap = {}
+        start = 0
+        for end in range(len(s2)):
+            hashmap[s2[end]] = hashmap.get(s2[end], 0) + 1
+            print(hashmap)
+            if hashmap == hashmap1:
+                return True
+            if end - start + 1 == l_s1:
+                head = s2[start]
+                hashmap[head] -= 1
+                if hashmap[head] == 0:
+                    del hashmap[head]
+                start += 1
+        return False

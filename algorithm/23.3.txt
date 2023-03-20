@@ -225,3 +225,66 @@ class Solution:
                     del hashmap[head]
                 start += 1
         return False
+        
+-----------------------------------------------------------------------------------------
+3.20：
+有一幅以 m x n 的二维整数数组表示的图画 image ，其中 image[i][j] 表示该图画的像素值大小。
+你也被给予三个整数 sr ,  sc 和 newColor 。你应该从像素 image[sr][sc] 开始对图像进行 上色填充 。
+为了完成 上色工作 ，从初始像素开始，记录初始坐标的 上下左右四个方向上 像素值与初始坐标相同的相连像素点，接着再记录这四个方向上符合条件的像素点与他们对应 四个方向上 像素值与初始坐标相同的相连像素点，……，重复该过程。将所有有记录的像素点的颜色值改为 newColor 。
+最后返回 经过上色渲染后的图像 。
+
+深度广度优先搜索，用队列：
+DFS(队列，先进先出)
+my solution:
+from queue import Queue # 队列
+
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        if color == image[sr][sc]:
+            return image
+        row = len(image) # 行
+        column = len(image[0]) # 列
+        paintlist = Queue()
+        paintlist.put((sr,sc))
+        directions = {(1, 0), (-1, 0), (0, 1), (0, -1)}
+        originColor = image[sr][sc]
+        while not paintlist.empty():
+            now_paint = paintlist.get()
+            image[now_paint[0]][now_paint[1]] = color
+            for direction in directions:
+                new_i = now_paint[0] + direction[0]
+                new_j = now_paint[1] + direction[1]
+                if 0 <= new_i < row and 0 <= new_j < column and image[new_i][new_j] == originColor:
+                    paintlist.put((new_i,new_j))
+        return image
+
+给你一个大小为 m x n 的二进制矩阵 grid 。
+岛屿 是由一些相邻的 1 (代表土地) 构成的组合，这里的「相邻」要求两个 1 必须在 水平或者竖直的四个方向上 相邻。你可以假设 grid 的四个边缘都被 0（代表水）包围着。
+岛屿的面积是岛上值为 1 的单元格的数目。
+计算并返回 grid 中最大的岛屿面积。如果没有岛屿，则返回面积为 0 。
+BFS(栈，后进先出)
+my solution:
+class Solution:
+    def maxAreaOfIsland(self, grid: List[List[int]]) -> int:
+        m, n = len(grid), len(grid[0])
+        def bfs(i, j):
+            queue = [(i, j)]
+            grid[i][j] = 0
+            area = 1
+            while queue:
+                x, y = queue.pop(0)
+                for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
+                    nx, ny = x + dx, y + dy
+                    if 0 <= nx < m and 0 <= ny < n and grid[nx][ny]:
+                        grid[nx][ny] = 0
+                        area += 1
+                        queue.append((nx, ny))
+            return area
+        
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j]:
+                    res = max(res, bfs(i, j))
+        return res
+        

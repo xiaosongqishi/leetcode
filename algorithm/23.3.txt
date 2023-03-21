@@ -287,4 +287,85 @@ class Solution:
                 if grid[i][j]:
                     res = max(res, bfs(i, j))
         return res
-        
+
+-----------------------------------------------------------------------------------------
+3.21：
+给你两棵二叉树： root1 和 root2 。
+
+想象一下，当你将其中一棵覆盖到另一棵之上时，两棵树上的一些节点将会重叠（而另一些不会）。你需要将这两棵树合并成一棵新二叉树。合并的规则是：如果两个节点重叠，那么将这两个节点的值相加作为合并后节点的新值；否则，不为 null 的节点将直接作为新二叉树的节点。
+
+返回合并后的二叉树。
+
+注意: 合并过程必须从两个树的根节点开始。
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+from queue import Queue
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+        # 如果 root1 为空，则合并之后节点为 root2
+        if root1 == None:
+            return root2
+        # 如果 root2 为空，则合并之后节点为 root1
+        if root2 == None:
+            return root1
+        # 如果都存在节点，创建一个新的节点存储合并后的值
+        root = TreeNode(root1.val + root2.val)
+        # 递归合并左子树
+        root.left = self.mergeTrees(root1.left, root2.left)
+        # 递归合并右子树
+        root.right = self.mergeTrees(root1.right, root2.right)
+        return root
+
+
+给定一个 完美二叉树 ，其所有叶子节点都在同一层，每个父节点都有两个子节点。二叉树定义如下：
+
+struct Node {
+  int val;
+  Node *left;
+  Node *right;
+  Node *next;
+}
+填充它的每个 next 指针，让这个指针指向其下一个右侧节点。如果找不到下一个右侧节点，则将 next 指针设置为 NULL。
+
+初始状态下，所有 next 指针都被设置为 NULL。
+
+ 
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+class Solution(object):
+	def connect(self, root):
+		"""
+		:type root: Node
+		:rtype: Node
+		"""
+		def dfs(root):
+			if not root:
+				return
+			left = root.left
+			right = root.right
+			# 配合动画演示理解这段，以root为起点，将整个纵深这段串联起来
+			while left:
+				left.next = right
+				left = left.right
+				right = right.left
+			# 递归的调用左右节点，完成同样的纵深串联
+			dfs(root.left)
+			dfs(root.right)
+		dfs(root)
+		return root
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------

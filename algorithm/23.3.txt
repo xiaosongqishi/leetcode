@@ -365,6 +365,33 @@ class Solution(object):
 		dfs(root)
 		return root
 -----------------------------------------------------------------------------------------
+3.22：
+给定一个由 0 和 1 组成的矩阵 mat ，请输出一个大小相同的矩阵，其中每一个格子是 mat 中对应位置元素到最近的 0 的距离。
+
+两个相邻元素间的距离为 1 。
+class Solution:
+    def updateMatrix(self, mat: List[List[int]]) -> List[List[int]]:
+        m, n = len(mat), len(mat and mat[0])
+        dir = [(-1,0), (0,1), (1,0), (0,-1)]
+
+        queue = deque()
+        for r in range(m):
+            for c in range(n):
+                if mat[r][c] == 0:
+                    queue.append((r, c))
+                else:
+                    mat[r][c] = -1
+
+        while queue:
+            r, c = queue.popleft()
+            for dr,dc in dir:
+                nr, nc = r + dr, c + dc
+                if nr < 0 or nr >= m or nc < 0 or nc >= n or mat[nr][nc] != -1: 
+                    continue
+                mat[nr][nc] = mat[r][c] + 1
+                queue.append((nr, nc))
+        return mat
+
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

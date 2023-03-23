@@ -446,6 +446,40 @@ class Solution:
             return l2
 
 
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+iterative approach:
+# Definition for singly-linked list.
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        prev = None
+        curr = head 
+        while curr is not None:
+            next_node = curr.next
+            curr.next = prev
+            prev = curr
+            curr = next_node
+        return prev
+
+recursive approach:
+class Solution:
+    def reverseList(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        # base case: empty list or single node list
+        if head is None or head.next is None:
+            return head
+        
+        # recursively reverse the rest of the list
+        new_head = self.reverseList(head.next)
+        
+        # reverse the link between head and head.next
+        head.next.next = head
+        head.next = None
+        
+        # return the new head of the reversed list
+        return new_head
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

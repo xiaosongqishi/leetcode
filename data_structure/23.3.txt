@@ -101,4 +101,56 @@ class Solution:
         return res
 
 -----------------------------------------------------------------------------------------
+3.24：
+Q: 121. Best Time to Buy and Sell Stock
+sol1:
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        max_profit = 0
+        min_price = float('inf')
+        for price in prices:
+            min_price = min(min_price, price)
+            max_profit = max(max_profit, price - min_price)
+        return max_profit
+
+sol2(gpt):
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        if not prices:
+            return 0
+        
+        min_price = prices[0]
+        max_profit = 0
+        
+        for price in prices[1:]:
+            if price < min_price:
+                min_price = price
+            else:
+                max_profit = max(max_profit, price - min_price)
+        
+        return max_profit
+
+Q: 566. Reshape the Matrix
+
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        m, n = len(mat), len(mat[0])
+        if m * n != r * c:
+            return mat
+        
+        flat_mat = [elem for row in mat for elem in row]
+        new_mat = [[0] * c for _ in range(r)]
+        for i in range(r):
+            for j in range(c):
+                new_mat[i][j] = flat_mat[i * c + j]
+        
+        return new_mat
+
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

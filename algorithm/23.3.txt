@@ -481,5 +481,108 @@ class Solution:
         # return the new head of the reversed list
         return new_head
 -----------------------------------------------------------------------------------------
+3.24：
+Q: Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
+You may return the answer in any order.
+Example 1:
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+Explanation: There are 4 choose 2 = 6 total combinations.
+Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
+
+sol1:
+import itertools
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        return list(itertools.combinations(range(1, n+1), k))
+
+sol2(gpt):
+class Solution:
+    def combine(self, n: int, k: int) -> List[List[int]]:
+        res = []
+        self.combine_helper(n, k, 1, [], res)
+        return res
+        
+    def combine_helper(self, n, k, start, curr, res):
+        if len(curr) == k:
+            res.append(curr.copy())
+            return
+        for i in range(start, n+1):
+            curr.append(i)
+            self.combine_helper(n, k, i+1, curr, res)
+            curr.pop()
+The combine function takes two integers n and k as input and returns a list of all possible combinations of k numbers chosen from the range [1, n].
+
+The combine_helper function is a recursive helper function that takes four arguments:
+
+n: the upper bound of the range
+k: the number of elements in each combination
+start: the starting index to generate the combination
+curr: a list of the current combination
+res: the list of all possible combinations
+The function uses backtracking to generate all possible combinations. The base case is when 
+the length of the curr list equals k, in which case we append a copy of curr to res and 
+return. Otherwise, we iterate over the range from start to n and append each value to curr.
+ We then recursively call combine_helper with start set to i+1 to avoid duplicates, and 
+ then remove the last element from curr to backtrack and try the next value in the loop.
+
+The main combine function initializes an empty list res, calls the helper function 
+combine_helper with start=1 and an empty list curr, and then returns the final list of 
+combinations.
+
+
+Q: Given an array nums of distinct integers, return all the possible permutations. You can return the answer in any order.
+
+Example 1:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+sol1:
+class Solution:
+    def permute(self, nums: List[int]) -> List[List[int]]:
+        return list(itertools.permutations(nums))
+
+
+Q: Given a string s, you can transform every letter individually to be lowercase or uppercase to create another string.
+
+Return a list of all possible strings we could create. Return the output in any order.
+
+ 
+
+Example 1:
+
+Input: s = "a1b2"
+Output: ["a1b2","a1B2","A1b2","A1B2"]
+
+sol1:
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        ans = [""]
+        for i, c in enumerate(s):
+            if c.isalpha():
+                ans = [a + c.lower() for a in ans] + [a + c.upper() for a in ans]
+            else:
+                ans = [a + c for a in ans]
+        return ans
+
+sol2(gpt):
+class Solution:
+    def letterCasePermutation(self, s: str) -> List[str]:
+        def generate_permutations(s, i, current, output):
+            if i == len(s):
+                output.append(current)
+                return
+            
+            if s[i].isalpha():
+                generate_permutations(s, i+1, current+s[i].lower(), output)
+                generate_permutations(s, i+1, current+s[i].upper(), output)
+            else:
+                generate_permutations(s, i+1, current+s[i], output)
+        
+        output = []
+        generate_permutations(s, 0, "", output)
+        return output
+
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

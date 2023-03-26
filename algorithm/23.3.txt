@@ -585,4 +585,112 @@ class Solution:
         return output
 
 -----------------------------------------------------------------------------------------
+3.25
+Q: 70. Climbing Stairs
+sol1(gpt):
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        if n == 0:
+            return 1
+        if n == 1:
+            return 1
+        prev1 = 1
+        prev2 = 1
+        for i in range(2, n+1):
+            curr = prev1 + prev2
+            prev2 = prev1
+            prev1 = curr
+        return curr
+
+sol2(ref):
+class Solution:
+    def climbStairs(self, n: int) -> int:
+        dp = [0] * (n+1)
+        dp[0] = 1
+        dp[1] = 1
+        if n <= 1:
+            return dp[n]
+        for i in range(2,n+1):
+            dp[i] = dp[i-1] + dp[i-2]
+        return dp[n]
+
+Q: 198. House Robber
+sol1(gpt):
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        n = len(nums)
+        if n == 0:
+            return 0
+        elif n == 1:
+            return nums[0]
+        dp = [0] * n
+        dp[0] = nums[0]
+        dp[1] = max(nums[0], nums[1])
+        for i in range(2, n):
+            dp[i] = max(nums[i] + dp[i-2], dp[i-1])
+        return dp[n-1]
+
+sol2(ref):
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        prev = 0
+        curr = 0
+        
+        # 每次循环，计算“偷到当前房子为止的最大金额”
+        for i in nums:
+            # 循环开始时，curr 表示 dp[k-1]，prev 表示 dp[k-2]
+            # dp[k] = max{ dp[k-1], dp[k-2] + i }
+            prev, curr = curr, max(curr, prev + i)
+            # 循环结束时，curr 表示 dp[k]，prev 表示 dp[k-1]
+
+        return curr
+-----------------------------------------------------------------------------------------
+3.26
+
+Q：120. Triangle
+sol1(gpt):
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        n = len(triangle)
+        # Initialize the DP table with the last row of the triangle
+        dp = triangle[-1]
+        print(dp)
+        # Starting from the second-last row, update the DP table with the minimum path sum
+        for i in range(n-2, -1, -1):
+            for j in range(len(triangle[i])):
+                print("dp[{}]={}+min({},{})".format(j,triangle[i][j],dp[j],dp[j+1]))
+                dp[j] = triangle[i][j] + min(dp[j], dp[j+1])
+            print(dp)
+        # The final value in the DP table will be the minimum path sum from top to bottom
+        print(dp)
+        return dp[0]
+
+
+Q: 231. Power of Two
+
+class Solution:
+    def isPowerOfTwo(self, n: int) -> bool:
+        return n > 0 and (n & (n - 1)) == 0
+
+Q: 191. Number of 1 Bits
+sol1(ref):
+class Solution:
+    def hammingWeight(self, n: int) -> int:
+        return str(bin(n)).count('1')
+sol2(gpt):
+class Solution:
+    def hammingWeight(n: int) -> int:
+        count = 0
+        while n > 0:
+            if n & 1 == 1:
+                count += 1
+            n >>= 1
+        return count
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

@@ -147,6 +147,42 @@ class Solution:
         return new_mat
 
 -----------------------------------------------------------------------------------------
+3.29
+Q: 136. Single Number
+
+sol(ref):
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        return reduce(lambda x, y: x ^ y, nums)
+
+sol(gpt):
+class Solution:
+    def singleNumber(self, nums: List[int]) -> int:
+        res = 0
+        for num in nums:
+            res ^= num
+        return res
+
+Q: 169. Majority Element
+sol():
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        return sorted(nums)[len(nums) // 2]
+
+sol(gpt):
+class Solution:
+    def majorityElement(self, nums: List[int]) -> int:
+        count = 0
+        candidate = None
+        
+        for num in nums:
+            if count == 0:
+                candidate = num
+            count += (1 if num == candidate else -1)
+        
+        return candidate
+
+
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

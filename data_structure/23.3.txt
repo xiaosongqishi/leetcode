@@ -182,8 +182,158 @@ class Solution:
         
         return candidate
 
-
 -----------------------------------------------------------------------------------------
+3.31
+Q: 15.3Sum
+sol(gpt):
+class Solution:
+    def threeSum(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        res = []
+        
+        for i in range(len(nums) - 2):
+            if i > 0 and nums[i] == nums[i - 1]:
+                continue
+            l, r = i + 1, len(nums) - 1
+            while l < r:
+                total = nums[i] + nums[l] + nums[r]
+                if total < 0:
+                    l += 1
+                elif total > 0:
+                    r -= 1
+                else:
+                    res.append([nums[i], nums[l], nums[r]])
+                    while l < r and nums[l] == nums[l + 1]:
+                        l += 1
+                    while l < r and nums[r] == nums[r - 1]:
+                        r -= 1
+                    l += 1
+                    r -= 1
+        
+        return res
+
+Q: 75.Sort Colors
+sol(gpt):
+class Solution:
+    def sortColors(self, nums: List[int]) -> None:
+        """
+        Do not return anything, modify nums in-place instead.
+        """
+        p0 = curr = 0
+        p2 = len(nums) - 1
+        
+        while curr <= p2:
+            if nums[curr] == 0:
+                nums[curr], nums[p0] = nums[p0], nums[curr]
+                p0 += 1
+                curr += 1
+            elif nums[curr] == 2:
+                nums[curr], nums[p2] = nums[p2], nums[curr]
+                p2 -= 1
+            else:
+                curr += 1
+
+Q: 56.Merge Intervals
+sol(gpt):
+class Solution:
+    def merge(self, intervals: List[List[int]]) -> List[List[int]]:
+        intervals.sort(key=lambda x: x[0])
+        merged = []
+        
+        for interval in intervals:
+            if not merged or merged[-1][1] < interval[0]:
+                merged.append(interval)
+            else:
+                merged[-1][1] = max(merged[-1][1], interval[1])
+        
+        return merged
+
+Q: 706.Design HashMap
+sol(gpt):
+class MyHashMap:
+
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.size = 1000
+        self.buckets = [[] for _ in range(self.size)]
+
+    def _hash(self, key):
+        return key % self.size
+
+    def put(self, key: int, value: int) -> None:
+        """
+        value will always be non-negative.
+        """
+        hash_key = self._hash(key)
+        for i, (k, v) in enumerate(self.buckets[hash_key]):
+            if key == k:
+                self.buckets[hash_key][i] = (key, value)
+                return
+        self.buckets[hash_key].append((key, value))
+
+    def get(self, key: int) -> int:
+        """
+        Returns the value to which the specified key is mapped, or -1 if this map contains no mapping for the key
+        """
+        hash_key = self._hash(key)
+        for k, v in self.buckets[hash_key]:
+            if key == k:
+                return v
+        return -1
+
+    def remove(self, key: int) -> None:
+        """
+        Removes the mapping of the specified value key if this map contains a mapping for the key
+        """
+        hash_key = self._hash(key)
+        for i, (k, v) in enumerate(self.buckets[hash_key]):
+            if key == k:
+                del self.buckets[hash_key][i]
+
+Q: 119.Pascal's Triangle II
+sol(gpt):
+class Solution:
+    def getRow(self, rowIndex: int) -> List[int]:
+        res = [1]
+        for i in range(rowIndex):
+            res = [x + y for x, y in zip([0] + res, res + [0])]
+        return res
+
+Q: 48.Rotate Image
+sol(gpt):
+class Solution:
+    def rotate(self, matrix: List[List[int]]) -> None:
+        """
+        Do not return anything, modify matrix in-place instead.
+        """
+        n = len(matrix)
+        for i in range(n // 2 + n % 2):
+            for j in range(n // 2):
+                tmp = [0] * 4
+                row, col = i, j
+                for k in range(4):
+                    tmp[k] = matrix[row][col]
+                    row, col = col, n - 1 - row
+                for k in range(4):
+                    matrix[row][col] = tmp[(k - 1) % 4]
+                    row, col = col, n - 1 - row
+
+Q: 59.Spiral Matrix II
+sol(gpt):
+class Solution:
+    def generateMatrix(self, n: int) -> List[List[int]]:
+        res = [[0] * n for _ in range(n)]
+        num, i, j, di, dj = 1, 0, 0, 0, 1
+        while num <= n * n:
+            res[i][j] = num
+            num += 1
+            if res[(i + di) % n][(j + dj) % n]:
+                di, dj = dj, -di
+            i += di
+            j += dj
+        return res
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

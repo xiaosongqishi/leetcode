@@ -742,6 +742,238 @@ class Solution:
         return left if nums[left] == target else -1
 
 -----------------------------------------------------------------------------------------
+Q: 74. Search a 2D Matrix
+sol1(gpt):
+class Solution:
+    def searchMatrix(self, matrix: List[List[int]], target: int) -> bool:
+        if not matrix or not matrix[0]:
+            return False
+        m = len(matrix)
+        n = len(matrix[0])
+        left = 0
+        right = m * n - 1
+        while left <= right:
+            mid = (left + right) // 2
+            if matrix[mid // n][mid % n] == target:
+                return True
+            elif matrix[mid // n][mid % n] < target:
+                left = mid + 1
+            else:
+                right = mid - 1
+        return False
+
+Q: 153. Find Minimum in Rotated Sorted Array
+sol1(gpt):
+class Solution:
+    def findMin(self, nums: List[int]) -> int:
+        if not nums:
+            return -1
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] > nums[right]:
+                left = mid + 1
+            else:
+                right = mid
+        return nums[left]
+
+Q: 162. Find Peak Element
+sol1(gpt):
+class Solution:
+    def findPeakElement(self, nums: List[int]) -> int:
+        if not nums:
+            return -1
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            mid = (left + right) // 2
+            if nums[mid] > nums[mid + 1]:
+                right = mid
+            else:
+                left = mid + 1
+        return left
+
+Q: 82. Remove Duplicates from Sorted List II
+sol1(gpt):
+class Solution:
+    def deleteDuplicates(self, head: ListNode) -> ListNode:
+        # 1. 递归
+        if not head:
+            return head
+        dummy = ListNode(0)
+        dummy.next = head
+        prev = dummy
+        cur = head
+        while cur:  
+            while cur.next and cur.val == cur.next.val: # 重复的节点
+                cur = cur.next
+            if prev.next == cur:
+                prev = prev.next
+            else:
+                prev.next = cur.next
+            cur = cur.next
+        return dummy.next
+
+Q: 844. Backspace String Compare
+sol1(gpt):
+class Solution:
+    def backspaceCompare(self, S: str, T: str) -> bool:
+        def build(S):   # 用栈来模拟退格
+            for c in S: 
+                if c != '#':    # 非退格字符入栈
+                    ans.append(c)
+                elif ans:    # 退格字符出栈
+                    ans.pop()
+            return "".join(ans) # 将栈中的字符拼接成字符串
+
+        return build(S) == build(T)
+
+Q: 986. Interval List Intersections
+sol1(gpt):
+class Solution:
+    def intervalIntersection(self, A: List[List[int]], B: List[List[int]]) -> List[List[int]]:
+        i = j = 0
+        res = []
+        while i < len(A) and j < len(B):
+            if A[i][0] <= B[j][1] and B[j][0] <= A[i][1]:
+                res.append([max(A[i][0], B[j][0]), min(A[i][1], B[j][1])])
+            if A[i][1] < B[j][1]:
+                i += 1
+            else:
+                j += 1
+        return res
+
+Q: 11. Container With Most Water
+sol1(gpt):
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        left = 0
+        right = len(height) - 1
+        res = 0
+        while left < right:
+            res = max(res, (right - left) * min(height[left], height[right]))
+            if height[left] < height[right]:
+                left += 1
+            else:
+                right -= 1
+        return res
+
+Q: 438. Find All Anagrams in a String
+sol1(gpt):
+class Solution:
+    def findAnagrams(self, s: str, p: str) -> List[int]:
+        if not s or not p:
+            return []
+        res = []    # 记录结果
+        left = 0    # 滑动窗口左边界
+        right = 0   # 滑动窗口右边界
+        need = {}   # 记录p中每个字符出现的次数
+        window = {} # 记录滑动窗口中每个字符出现的次数
+        for c in p: # 初始化need
+            need[c] = need.get(c, 0) + 1    
+        match = 0   # 记录滑动窗口中满足need条件的字符个数
+        while right < len(s):   # 滑动窗口右边界不断右移
+            c1 = s[right]   # 右移窗口
+            if c1 in need:  # 如果c1是p中的字符
+                window[c1] = window.get(c1, 0) + 1  # 右移窗口
+                if window[c1] == need[c1]:  # 如果c1的个数满足need中的个数
+                    match += 1  # 满足条件的字符个数加1
+            right += 1  # 右移窗口
+            while match == len(need):   # 如果满足条件的字符个数等于need中的字符个数
+                if right - left == len(p):  # 如果滑动窗口的大小等于p的大小
+                    res.append(left)    # 记录结果
+                c2 = s[left]    # 左移窗口
+                if c2 in need:  # 如果c2是p中的字符
+                    window[c2] -= 1 # 左移窗口
+                    if window[c2] < need[c2]:   # 如果c2的个数小于need中的个数
+                        match -= 1  # 满足条件的字符个数减1
+                left += 1   # 左移窗口
+        return res
+
+Q: 713. Subarray Product Less Than K
+sol1(gpt):
+class Solution:
+    def numSubarrayProductLessThanK(self, nums: List[int], k: int) -> int:
+        if not nums or k <= 1:
+            return 0
+        left = 0    # 滑动窗口左边界
+        right = 0   # 滑动窗口右边界
+        res = 0    # 记录结果
+        product = 1 # 记录滑动窗口中所有元素的乘积
+        while right < len(nums):    # 滑动窗口右边界不断右移
+            product *= nums[right]  # 右移窗口
+            while product >= k: # 如果乘积大于等于k
+                product /= nums[left]   # 左移窗口
+                left += 1   # 左移窗口
+            res += right - left + 1 # 更新结果
+            right += 1  # 右移窗口
+        return res
+
+Q: 209. Minimum Size Subarray Sum
+sol1(gpt):
+class Solution:
+    def minSubArrayLen(self, s: int, nums: List[int]) -> int:
+        if not nums:
+            return 0
+        left = 0    # 滑动窗口左边界
+        right = 0   # 滑动窗口右边界
+        res = float('inf')  # 记录结果
+        sum = 0 # 记录滑动窗口中所有元素的和
+        while right < len(nums):    # 滑动窗口右边界不断右移
+            sum += nums[right]  # 右移窗口
+            while sum >= s: # 如果和大于等于s
+                res = min(res, right - left + 1) # 更新结果
+                sum -= nums[left]   # 左移窗口
+                left += 1   # 左移窗口
+            right += 1  # 右移窗口
+        return res if res != float('inf') else 0
+
+Q: 200. Number of Islands
+sol1(gpt):
+class Solution:
+    def numIslands(self, grid: List[List[str]]) -> int:
+        if not grid or not grid[0]:
+            return 0
+        m = len(grid)
+        n = len(grid[0])
+        res = 0
+        for i in range(m):
+            for j in range(n):
+                if grid[i][j] == '1':
+                    res += 1
+                    self.dfs(grid, i, j)
+        return res
+
+    def dfs(self, grid, i, j):
+        if i < 0 or i >= len(grid) or j < 0 or j >= len(grid[0]) or grid[i][j] != '1':
+            return
+        grid[i][j] = '0'
+        self.dfs(grid, i + 1, j)
+        self.dfs(grid, i - 1, j)
+        self.dfs(grid, i, j + 1)
+        self.dfs(grid, i, j - 1)
+
+Q: 547. Friend Circles
+sol1(gpt):
+class Solution:
+    def findCircleNum(self, M: List[List[int]]) -> int:
+        if not M:
+            return 0
+        n = len(M)
+        res = 0
+        visited = [False] * n
+        for i in range(n):
+            if not visited[i]:
+                res += 1
+                self.dfs(M, i, visited)
+        return res
+
+    def dfs(self, M, i, visited):
+        for j in range(len(M)):
+            if M[i][j] == 1 and not visited[j]:
+                visited[j] = True
+                self.dfs(M, j, visited)
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------

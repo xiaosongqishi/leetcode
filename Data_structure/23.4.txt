@@ -1,0 +1,44 @@
+4.2
+Q：334 .Increasing Triplet Subsequence
+sol(gpt):
+class Solution:
+    def increasingTriplet(self, nums: List[int]) -> bool:
+        if len(nums) < 3:
+            return False
+        min1 = nums[0] # min1 is the smallest number in the array
+        min2 = float('inf') # min2 is the second smallest number in the array
+        for i in range(1, len(nums)): # start from the second number
+            if nums[i] > min2: # if the current number is bigger than min2, then we find the triplet
+                return True
+            if nums[i] > min1:  # if the current number is bigger than min1, then we update min2
+                min2 = nums[i]
+            else:            # if the current number is smaller than min1, then we update min1
+                min1 = nums[i]
+        return False
+
+Q: 238. Product of Array Except Self
+sol(gpt):
+class Solution:
+    def productExceptSelf(self, nums: List[int]) -> List[int]:
+        n = len(nums)
+        res = [1] * n
+        for i in range(1, n):
+            res[i] = res[i - 1] * nums[i - 1]
+        right = 1
+        for i in range(n - 1, -1, -1):
+            res[i] *= right
+            right *= nums[i]
+        return res
+
+Q: 560. Subarray Sum Equals K
+sol(gpt):
+class Solution:
+    def subarraySum(self, nums: List[int], k: int) -> int:
+        count = 0
+        prefix_sum = {0:1} # 记录前缀和的出现次数，初始化为{0:1}
+        cur_sum = 0 # 当前的前缀和
+        for num in nums:
+            cur_sum += num
+            count += prefix_sum.get(cur_sum - k, 0) # 计算以当前位置为结尾的符合条件的子数组个数
+            prefix_sum[cur_sum] = prefix_sum.get(cur_sum, 0) + 1 # 更新前缀和的出现次数
+        return count

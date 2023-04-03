@@ -42,3 +42,34 @@ class Solution:
             count += prefix_sum.get(cur_sum - k, 0) # 计算以当前位置为结尾的符合条件的子数组个数
             prefix_sum[cur_sum] = prefix_sum.get(cur_sum, 0) + 1 # 更新前缀和的出现次数
         return count
+
+----------------------------------------------------------------------------------------------
+4.3
+Q: 415. Add Strings
+sol(gpt):
+class Solution:
+    def addStrings(self, num1: str, num2: str) -> str:
+        res = []
+        carry = 0
+        i, j = len(num1) - 1, len(num2) - 1
+        while i >= 0 or j >= 0 or carry:
+            if i >= 0:
+                carry += int(num1[i])
+                i -= 1
+            if j >= 0:
+                carry += int(num2[j])
+                j -= 1
+            res.append(str(carry % 10))
+            carry //= 10
+        return ''.join(res[::-1])
+
+Q: 409. Longest Palindrome
+sol(gpt):
+class Solution:
+    def longestPalindrome(self, s: str) -> int:
+        res = 0
+        for v in collections.Counter(s).values():
+            res += v // 2 * 2
+            if res % 2 == 0 and v % 2 == 1:
+                res += 1
+        return res

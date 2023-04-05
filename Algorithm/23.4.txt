@@ -101,3 +101,119 @@ class Solution:
                 dfs(j, path + [j])
         dfs(0, [0])
         return res
+
+-----------------------------------------------------------------------------------------------
+4.5
+Q: 78 .Subsets
+sol(gpt):
+class Solution:
+    def subsets(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        def dfs(i, path):
+            res.append(path)
+            for j in range(i, n):
+                dfs(j + 1, path + [nums[j]])
+        dfs(0, [])
+        return res
+
+Q: 90. Subsets II
+sol(gpt):
+class Solution:
+    def subsetsWithDup(self, nums: List[int]) -> List[List[int]]:
+        res = []
+        n = len(nums)
+        nums.sort()
+        def dfs(i, path):   # i: start index    path: current path  res: result 
+            res.append(path)
+            for j in range(i, n):   
+                if j > i and nums[j] == nums[j - 1]:    # skip duplicate
+                    continue
+                dfs(j + 1, path + [nums[j]])    
+        dfs(0, [])
+        return res
+
+Q: 47 .Permutations II
+sol(gpt):
+class Solution:
+    def permuteUnique(self, nums: List[int]) -> List[List[int]]:
+        nums.sort()
+        self.res = []
+        check = [0 for i in range(len(nums))]
+        
+        self.backtrack([], nums, check)
+        return self.res
+    
+    def backtrack(self, path, nums, check):
+        if len(path) == len(nums):
+            self.res.append(path)
+            return
+        
+        for i in range(len(nums)):
+            if check[i] == 1:
+                continue
+            if i > 0 and nums[i] == nums[i - 1] and check[i - 1] == 0:
+                continue
+            check[i] = 1
+            self.backtrack(path + [nums[i]], nums, check)
+            check[i] = 0
+
+Q: 39 .Combination Sum
+sol(gpt):
+from typing import List
+class Solution:
+    def combinationSum(self, candidates: List[int], target: int) -> List[List[int]]:
+
+        def dfs(candidates, begin, size, path, res, target):
+            if target == 0:
+                res.append(path)
+                return
+
+            for index in range(begin, size):
+                residue = target - candidates[index]
+                if residue < 0:
+                    break
+
+                dfs(candidates, index, size, path + [candidates[index]], res, residue)
+
+        size = len(candidates)
+        if size == 0:
+            return []
+        candidates.sort()
+        path = []
+        res = []
+        dfs(candidates, 0, size, path, res, target)
+        return res
+
+Q: 40 .Combination Sum II
+sol(gpt):
+class Solution:
+    def combinationSum2(self, candidates: List[int], target: int) -> List[List[int]]:
+        res = []
+        n = len(candidates)
+        candidates.sort()
+        def dfs(i, path, target):
+            if target == 0:
+                res.append(path)
+                return
+            for j in range(i, n):
+                if j > i and candidates[j] == candidates[j - 1]:
+                    continue
+                if target - candidates[j] < 0:
+                    break
+                dfs(j + 1, path + [candidates[j]], target - candidates[j])
+        dfs(0, [], target)
+        return res
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------

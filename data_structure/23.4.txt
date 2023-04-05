@@ -73,3 +73,70 @@ class Solution:
             if res % 2 == 0 and v % 2 == 1:
                 res += 1
         return res
+----------------------------------------------------------------------------------------------
+4.5
+Q: 290. Word Pattern
+sol(gpt):
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        words = s.split()
+        if len(pattern) != len(words):
+            return False
+        d = {}
+        for i in range(len(pattern)):
+            if pattern[i] not in d:
+                if words[i] in d.values():
+                    return False
+                d[pattern[i]] = words[i]
+            else:
+                if d[pattern[i]] != words[i]:
+                    return False
+        return True
+
+Q: 763. Partition Labels
+sol(gpt):
+class Solution:
+    def partitionLabels(self, S: str) -> List[int]:
+        last = {c: i for i, c in enumerate(S)}
+        j = anchor = 0
+        ans = []
+        for i, c in enumerate(S):
+            j = max(j, last[c])
+            if i == j:
+                ans.append(i - anchor + 1)
+                anchor = i + 1
+        return ans
+
+Q: 49. Group Anagrams
+sol(gpt):
+class Solution:
+    def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
+        d = {}
+        for s in strs:
+            key = tuple(sorted(s))
+            d[key] = d.get(key, []) + [s]
+        return list(d.values())
+
+Q: 43 .Multiply Strings
+sol(gpt):
+class Solution:
+    def multiply(self, num1: str, num2: str) -> str:
+        m, n = len(num1), len(num2)
+        res = [0] * (m + n)
+        for i in range(m - 1, -1, -1):
+            for j in range(n - 1, -1, -1):
+                mul = int(num1[i]) * int(num2[j])
+                p1, p2 = i + j, i + j + 1
+                sum = mul + res[p2]
+                res[p1] += sum // 10
+                res[p2] = sum % 10
+        while len(res) > 1 and res[0] == 0:
+            res.pop(0)
+        return ''.join(map(str, res))
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------------

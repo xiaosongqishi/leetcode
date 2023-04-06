@@ -205,6 +205,80 @@ class Solution:
         dfs(0, [], target)
         return res
 -----------------------------------------------------------------------------------------------
+4.6
+Q: 17 .Letter Combinations of a Phone Number
+sol(gpt):
+class Solution:
+    def letterCombinations(self, digits: str) -> List[str]:
+        if not digits:
+            return []
+        phone = {'2': 'abc', '3': 'def', '4': 'ghi', '5': 'jkl', '6': 'mno', '7': 'pqrs', '8': 'tuv', '9': 'wxyz'}
+        res = []
+        def dfs(i, path):
+            if i == len(digits):    # i: index of digits    path: current path  
+                res.append(path)
+                return
+            for c in phone[digits[i]]:
+                dfs(i + 1, path + c)
+        dfs(0, '')
+        return res
+# 解释上述代码
+# i: 当前处理的数字的索引
+# path: 当前路径
+# i == len(digits): 当前处理的数字的索引等于数字的长度，说明已经处理完所有的数字，将当前路径加入结果集
+# for c in phone[digits[i]]: 遍历当前数字对应的所有字母
+# dfs(i + 1, path + c): 处理下一个数字
+
+
+Q: 22 .Generate Parentheses
+sol(gpt):
+class Solution:
+    def generateParenthesis(self, n: int) -> List[str]:
+        res = []
+        def dfs(left, right, path):
+            if left == n and right == n:
+                res.append(path)
+                return
+            if left < n:
+                dfs(left + 1, right, path + '(')
+            if right < left:
+                dfs(left, right + 1, path + ')')
+        dfs(0, 0, '')
+        return res
+# 解释上述代码
+# left: 左括号的个数
+# right: 右括号的个数
+# path: 当前路径
+# left < n: 左括号的个数小于n，可以继续添加左括号
+# right < left: 右括号的个数小于左括号的个数，可以继续添加右括号
+
+
+Q: 79 .Word Search
+sol(gpt):
+class Solution:
+    def exist(self, board: List[List[str]], word: str) -> bool:
+        m, n = len(board), len(board[0])
+        for i in range(m):
+            for j in range(n):
+                if self.dfs(board, i, j, word):
+                    return True
+        return False
+
+    def dfs(self, board, i, j, word):
+        if not word:
+            return True
+        if not 0 <= i < len(board) or not 0 <= j < len(board[0]) or board[i][j] != word[0]:
+            return False
+        tmp = board[i][j]
+        board[i][j] = '#'
+        res = self.dfs(board, i + 1, j, word[1:]) or self.dfs(board, i - 1, j, word[1:]) or self.dfs(board, i, j + 1, word[1:]) or self.dfs(board, i, j - 1, word[1:])
+        board[i][j] = tmp
+        return res
+# 解释上述代码
+# 1. 递归终止条件：当 word 为空时，说明已经找到了，返回 True
+# 2. 递归过程：从当前位置的上下左右四个方向寻找下一个字符，如果找到了，继续递归寻找下一个字符，如果没找到，返回 False
+# 3. 回溯：将 board[i][j] 的值还原，因为 board[i][j] 可能在其他路径上被访问到
+
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------

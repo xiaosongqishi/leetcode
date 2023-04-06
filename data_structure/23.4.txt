@@ -134,6 +134,44 @@ class Solution:
             res.pop(0)
         return ''.join(map(str, res))
 ----------------------------------------------------------------------------------------------
+4.6
+Q: 187. Repeated DNA Sequences
+sol(gpt):
+class Solution:
+    def findRepeatedDnaSequences(self, s: str) -> List[str]:
+        d = {}
+        for i in range(len(s) - 9):
+            d[s[i:i + 10]] = d.get(s[i:i + 10], 0) + 1
+        return [k for k, v in d.items() if v > 1]
+# 解释上述代码
+# 1. 遍历字符串s，每次取10个字符，即s[i:i+10]，并将其作为key存入字典d中，value为出现次数
+# 2. 遍历字典d，将value大于1的key取出，即为重复的10个字符
+
+Q: 5. Longest Palindromic Substring
+sol(gpt):
+class Solution:
+    def longestPalindrome(self, s: str) -> str:
+        if len(s) < 2 or s == s[::-1]:
+            return s
+        start, max_len = 0, 1
+        for i in range(1, len(s)):
+            even = s[i - max_len:i + 1]
+            odd = s[i - max_len - 1:i + 1]
+            if i - max_len - 1 >= 0 and odd == odd[::-1]:
+                start = i - max_len - 1
+                max_len += 2
+                continue
+            if i - max_len >= 0 and even == even[::-1]:
+                start = i - max_len
+                max_len += 1
+        return s[start:start + max_len]
+# 解释上述代码
+# 1. 如果s长度小于2或者s本身就是回文串，直接返回s
+# 2. 初始化start和max_len，start为回文串的起始位置，max_len为回文串的长度
+# 3. 遍历字符串s，每次取两个字符，即s[i:i+2]，并判断其是否为回文串
+# 4. 如果是回文串，更新start和max_len
+# 5. 返回s[start:start+max_len]
+
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------

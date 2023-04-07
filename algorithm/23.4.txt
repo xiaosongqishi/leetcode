@@ -280,6 +280,32 @@ class Solution:
 # 3. 回溯：将 board[i][j] 的值还原，因为 board[i][j] 可能在其他路径上被访问到
 
 -----------------------------------------------------------------------------------------------
+4.7
+Q: 213 .House Robber II
+sol(gpt):
+class Solution:
+    def rob1(self, nums: List[int]) -> int:
+        f0 = f1 = 0
+        for i, x in enumerate(nums):
+            f0, f1 = f1, max(f1, f0 + x)
+        return f1
+
+    def rob(self, nums: List[int]) -> int:
+        return max(nums[0] + self.rob1(nums[2:-1]), self.rob1(nums[1:]))
+
+Q: 55 .Jump Game
+sol(gpt):
+class Solution:
+    def canJump(self, nums: List[int]) -> bool:
+        n = len(nums)
+        rightmost = 0
+        for i in range(n):
+            if i <= rightmost:
+                rightmost = max(rightmost, i + nums[i])
+                if rightmost >= n - 1:
+                    return True
+        return False
+
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------
 -----------------------------------------------------------------------------------------------

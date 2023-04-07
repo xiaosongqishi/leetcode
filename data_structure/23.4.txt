@@ -173,6 +173,72 @@ class Solution:
 # 5. 返回s[start:start+max_len]
 
 ----------------------------------------------------------------------------------------------
+4.7
+Q: 2 .Add Two Numbers
+sol(gpt):
+class Solution:
+    def addTwoNumbers(self, l1: ListNode, l2: ListNode) -> ListNode:
+        dummy = ListNode(0)
+        cur = dummy
+        carry = 0
+        while l1 or l2:
+            x = l1.val if l1 else 0
+            y = l2.val if l2 else 0
+            sum = x + y + carry
+            carry = sum // 10
+            cur.next = ListNode(sum % 10)
+            cur = cur.next
+            if l1:
+                l1 = l1.next
+            if l2:
+                l2 = l2.next
+        if carry:
+            cur.next = ListNode(1)
+        return dummy.next
+# 解释上述代码
+# 1. 初始化一个dummy节点，用于返回结果
+# 2. 初始化一个cur节点，用于遍历链表
+# 3. 初始化一个carry变量，用于存储进位
+# 4. 遍历链表l1和l2，直到l1和l2都为空
+# 5. 如果l1和l2都不为空，取l1和l2的值，如果l1或l2为空，取0
+# 6. 计算l1和l2的值以及进位carry的和
+# 7. 将和对10取余，作为新节点的值
+# 8. 将和对10取整，作为新的进位
+# 9. 将新节点加入到cur节点之后
+# 10. 将cur节点后移
+# 11. 如果l1不为空，l1后移
+# 12. 如果l2不为空，l2后移
+# 13. 如果carry不为空，将新节点加入到cur节点之后
+# 14. 返回dummy.next
+
+Q: 142 .Linked List Cycle II
+sol(gpt):
+class Solution:
+    def detectCycle(self, head: ListNode) -> ListNode:
+        slow = fast = head
+        while fast and fast.next:
+            slow = slow.next
+            fast = fast.next.next
+            if slow == fast:
+                break
+        if not fast or not fast.next:
+            return None
+        slow = head
+        while slow != fast:
+            slow = slow.next
+            fast = fast.next
+        return slow
+# 解释上述代码
+# 1. 初始化快慢指针slow和fast，都指向head
+# 2. 遍历链表，直到fast为空或者fast.next为空
+# 3. 如果fast为空或者fast.next为空，说明链表无环，返回None
+# 4. 如果fast和fast.next都不为空，slow后移一位，fast后移两位
+# 5. 如果slow和fast相遇，跳出循环
+# 6. 初始化slow指针，指向head
+# 7. 遍历链表，直到slow和fast相遇
+# 8. 返回slow
+
+
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------
 ----------------------------------------------------------------------------------------------

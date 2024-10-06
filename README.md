@@ -8,7 +8,7 @@ Welcome to my LeetCode repository! This repository contains my solutions to vari
 
 Currently, all solutions are implemented in:
 
-- Python 🐍
+- Python
 
 
 

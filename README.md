@@ -58,6 +58,7 @@ This table tracks the LeetCode problems Ethan has solved, organized by data stru
 | Dynamic Programming        | [Longest Increasing Subsequence](https://leetcode.com/problems/longest-increasing-subsequence/) | [/Medium/Problem_300_Longest_Increasing_Subsequence.py](./Medium/Problem_300_Longest_Increasing_Subsequence.py) |
 | Backtracking               | [Combination Sum](https://leetcode.com/problems/combination-sum/) | [/Medium/Problem_039_Combination_Sum.py](./Medium/Problem_039_Combination_Sum.py) |
 | Array                      | [Product of Array Except Self](https://leetcode.com/problems/product-of-array-except-self/) | [/Medium/Problem_238_Product_of_Array_Except_Self.py](./Medium/Problem_238_Product_of_Array_Except_Self.py) |
+| UnionFind                  | https://leetcode.com/problems/number-of-provinces/<br />https://leetcode.com/problems/number-of-connected-components-in-an-undirected-graph/description/ | [\Medium\Problem_323_Number_Of_Connected_Components.py](\Medium\Problem_323_Number_Of_Connected_Components.py)<br />[Medium\Problem_547_Number_of_Provinces.py](Medium\Problem_547_Number_of_Provinces.py) |
 
 
 
